@@ -25,7 +25,9 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-
+ion-input.custom.ios,ion-input.custom.ios{
+    color:var(--ion-color-funaprimary);
+}
 
 ion-button:focus{
     outline: none !important;

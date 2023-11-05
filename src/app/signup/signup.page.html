@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
       <ion-button slot="start" fill="clear">
-      <ion-button class="backbtn"  routerLink="/home" routerDirection="back"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
+      <ion-button color="funaprimary" class="backbtn"  routerLink="/home" routerDirection="back"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
       </ion-button>
   </ion-toolbar>
 </ion-header>
@@ -10,27 +10,15 @@
 <div class="ion-padding container">
   <h1>Signup</h1>
     <div class="form-container">
-        <ion-item>
-          <ion-label position="floating">Username</ion-label>
-          <ion-input ></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label position="floating">Email</ion-label>
-            <ion-input ></ion-input>
-       </ion-item>
-        <ion-item>
-          <ion-label position="floating">Password</ion-label>
-          <ion-input type="Password"></ion-input>
-          <ion-icon name="eye" slot="end"></ion-icon>
-      </ion-item>
+      <ion-input color="funaprimary" class="custom" label="Usar Name" label-placement="floating" fill="solid" placeholder="Usar Name"></ion-input>
 
-      <ion-item>
-        <ion-label position="floating">confirmd Password</ion-label>
-        <ion-input type="Password"></ion-input>
-        <ion-icon name="eye" slot="end"></ion-icon>
-      </ion-item>
+      <ion-input color="funaprimary" class="custom" label="Email" label-placement="floating" fill="solid" placeholder="Email"></ion-input>
 
-      <ion-button expand="block">Login</ion-button>
+      <ion-input  color="funaprimary" class="custom" label="Password" label-placement="floating" fill="solid" placeholder="Password"></ion-input>
+
+      <ion-input  color="funaprimary" class="custom" label="Confirmed Password" label-placement="floating" fill="solid" placeholder="Confirmed Password"></ion-input>
+
+      <ion-button color="funaprimary" class="registerbtn" expand="block">Login</ion-button>
 
       <div class="sign-up">
         already have an account? <ion-button color="dark" fill="clear" routerLink="/login" routerDirection="forward">Sing up</ion-button>
