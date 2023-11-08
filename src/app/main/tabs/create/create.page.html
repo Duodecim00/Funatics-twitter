@@ -1,0 +1,27 @@
+
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="funaprimary" class="backbtn" routerLink="/main/tabs/home" routerDirection="back"><ion-icon name="close-outline"></ion-icon></ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button>Publicar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+
+<ion-content [fullscreen]="true">
+   <ion-avatar >
+    <ion-img src="https://estaticos-cdn.sport.es/clip/0c9177bb-182c-4db2-9663-d5e01821f9a9_alta-libre-aspect-ratio_default_0.jpg" ></ion-img>
+</ion-avatar>
+<ion-item> 
+  <ion-textarea
+    placeholder="Type something here"
+    [autoGrow]="true"
+  >
+  </ion-textarea>
+     <ion-content class="uploadimages">
+
+     </ion-content>
+</ion-item>
+</ion-content>
