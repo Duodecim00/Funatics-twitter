@@ -1,4 +1,5 @@
 export interface TweetInterface {
+  _id: string;
   title: string;
   content: string;
   owner: {

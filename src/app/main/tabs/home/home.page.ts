@@ -6,6 +6,7 @@ import { AlertController } from '@ionic/angular';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { NavController } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -13,17 +14,40 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage {
-  AllTweets: TweetInterface[] = [];
+  constructor(
+    private http: HttpClient,
+    private alert: AlertController,
+    private navigation: NavController,
+    private actionSheetCtrl: ActionSheetController
+    ) {}
 
-  LikeToggleIcon='flame-outline';
+  async presentActionSheet() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      buttons: [
+        {
+          text: 'Delete',
+          role: 'destructive',
+          data: {
+            action: 'delete',
+          },
+        },
+        {
+          text: 'Edit',
+          role: 'modification',
+          data: {
+            action: 'Edit',
+          },
+        },
+      ],
+    });
 
-  toggleLike():void{
-    if(this.LikeToggleIcon=='flame-outline'){
-      this.LikeToggleIcon='flame';
-    }else{
-      this.LikeToggleIcon='flame-outline';
-    }
+    await actionSheet.present();
   }
+
+
+
+
+  AllTweets: TweetInterface[] = [];
 
   // items = [
   //   {
@@ -57,27 +81,19 @@ export class HomePage {
   //   },
   // ];
 
-  constructor(
-    private http: HttpClient,
-    private alert: AlertController,
-    private navigation: NavController
-  ) {}
+
 
   // async checkToken() {
   //   const { value } = await Preferences.get({ key: 'token' });
   //   console.log(`this is the token ${value}`);
   // }
 
+
+
   async deleteToken() {
     await Preferences.remove({ key: 'token' });
   }
   async ngOnInit() {
-    // this.http
-    //   .get('https://funaticsbackend-production.up.railway.app/funa/get')
-    //   .subscribe((res: any) => {
-    //     console.log(res.status);
-    //     this.AllTweets = res.tweets;
-    //   });
     this.http
       .get('https://funaticsbackend-production.up.railway.app/funa/get')
       .pipe(
@@ -108,8 +124,14 @@ export class HomePage {
         })
       )
       .subscribe((res: any) => {
-        console.log(res.status);
+        console.log(res);
         this.AllTweets = res.tweets;
       });
+  }
+
+  async test(_id: string) {
+    console.log(_id);
+    await Preferences.set({ key: 'tweetId', value: _id });
+    console.log('hola');
   }
 }

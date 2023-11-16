@@ -19,14 +19,6 @@
         <ion-col class="header"> </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-segment [scrollable]="true" value="For_You">
-      <ion-segment-button value="For_You">
-        For You
-      </ion-segment-button>
-      <ion-segment-button value="Following">
-        Following
-      </ion-segment-button>
-    </ion-segment>
   </ion-toolbar>
 </ion-header>
 
@@ -34,9 +26,9 @@
   <div id="container" class="ion-content-scroll-host">
     <ion-list>
       <ion-item *ngFor="let Tweet of AllTweets">
-        <ion-row class="wrapper">
-          <ion-col size="2">
-            <ion-avatar *ngIf="Tweet.owner.profilePicture === 'image.png'">
+        <ion-row class="wrapper" (click)="test(Tweet._id)">
+          <ion-col routerLink="/main/tabs/user" size="2">
+            <ion-avatar  *ngIf="Tweet.owner.profilePicture === 'image.png'">
               <ion-img src="../../../../assets/img/blank_user.png"></ion-img>
             </ion-avatar>
             <ion-avatar *ngIf="Tweet.owner.profilePicture != 'image.png'">
@@ -64,13 +56,18 @@
               <ion-grid [fixed]="true">
                 <ion-row>
                   <ion-col class="bottonbtn"
-                    ><ion-icon [name]="LikeToggleIcon" (click)="toggleLike()" ></ion-icon
+                    ><ion-icon name="heart-outline"></ion-icon
                     ><label class="count" [innerHTML]="Tweet.likes"></label
                   ></ion-col>
                   <ion-col class="bottonbtn"
                     ><ion-icon name="chatbox-outline"></ion-icon
                     ><label class="count" [innerHTML]="Tweet.comments"></label
                   ></ion-col>
+                  <ion-col class="bottonbtn">
+                    <ion-button fill="clear" (click)="presentActionSheet()">
+                      <ion-icon class="OptTwits" name="ellipsis-vertical"></ion-icon>
+                    </ion-button>
+                  </ion-col>
                 </ion-row>
               </ion-grid>
             </ion-row>
