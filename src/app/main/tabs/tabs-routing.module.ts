@@ -38,6 +38,10 @@ const routes: Routes = [
     path: 'edit',
     loadChildren: () => import('./edit/edit.module').then( m => m.EditPageModule)
   },
+  {
+    path: 'biograf',
+    loadChildren: () => import('./biograf/biograf.module').then( m => m.BiografPageModule)
+  },
 ];
 
 @NgModule({

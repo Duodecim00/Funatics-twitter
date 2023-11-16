@@ -1,0 +1,54 @@
+<ion-header collapse="fade">
+  <ion-toolbar>
+
+      <ion-button slot="start" fill="clear">
+        <ion-button
+          color="funaprimary"
+          class="backbtn"
+          routerLink="/main/tabs/home"
+          routerDirection="back"
+          ><ion-icon name="arrow-back-outline"></ion-icon
+        ></ion-button>
+      </ion-button>
+             
+            <ion-item  lines="none" >
+              <p>Post:</p>
+              <p>100</p>
+          </ion-item>
+    
+
+
+
+    <ion-buttons fill="clear" slot="end" >
+      <ion-button color="funaprimary" class="User-options-btn">
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </ion-button>   
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header> 
+
+<ion-content [scrollY]="false">
+  <div>
+    <ion-grid [fixed]="true">
+      <ion-card>
+        <ion-avatar class="avatarUser">
+             <ion-img
+               src="https://estaticos-cdn.sport.es/clip/0c9177bb-182c-4db2-9663-d5e01821f9a9_alta-libre-aspect-ratio_default_0.jpg"
+             ></ion-img>
+           </ion-avatar>
+         <ion-card-header>
+
+           <ion-card-title><ion-input label="User" label-placement="floating" fill="solid" value="andres Alvarez"></ion-input></ion-card-title>
+           <ion-card-subtitle class="userName" color="funacomplemen0"><ion-input label="User Name" label-placement="floating" fill="solid" value="radsylph"></ion-input></ion-card-subtitle>
+         </ion-card-header>
+         <ion-card-content>
+          <ion-textarea [autoGrow]="true" label="Description" labelPlacement="floating" [counter]="true" maxlength="200" value="Larga vida a la santa terra y por la gloria del emperador de la humanidad"></ion-textarea>
+         </ion-card-content>
+         
+       </ion-card>
+       
+
+
+    </ion-grid>
+  </div>
+</ion-content>
