@@ -3,10 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
 import { TweetInterface } from 'src/app/interface/tweet.interface';
 import { AlertController } from '@ionic/angular';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
 import { NavController } from '@ionic/angular';
 import { ActionSheetController } from '@ionic/angular';
+import { userProfile } from 'src/app/interface/user.interface';
 
 @Component({
   selector: 'app-home',
@@ -14,124 +13,258 @@ import { ActionSheetController } from '@ionic/angular';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage {
+
+
+  AllTweets: TweetInterface[] = [];
+  ownerToken: any;
+  LikeToggleIcon = 'flame-outline';
+  likes: any;
+  User: userProfile = {
+    name: '',
+    lastname: '',
+    username: '',
+    profilePicture: '',
+    _id: '',
+  };
+
+
   constructor(
     private http: HttpClient,
     private alert: AlertController,
     private navigation: NavController,
     private actionSheetCtrl: ActionSheetController
-    ) {}
+  ) {}
 
-  async presentActionSheet() {
+  async toggleLike(tweet: any, _id: any) {
+    try {
+      this.http
+        .put(
+          `https://funaticsbackend-production.up.railway.app/funa/like/${_id}`,
+          {}
+        )
+        .subscribe((res: any) => {
+          console.log(res.message);
+          if (res.message === 'Post unliked') {
+            console.log('unliked');
+            tweet.likes--;
+            tweet.isLiked = false;
+          } else if (res.message === 'Post liked') {
+            console.log('liked');
+            tweet.likes++;
+            tweet.isLiked = true;
+          }
+        });
+    } catch (error) {
+      console.log(error);
+      this.alert
+        .create({
+          header: 'Error',
+          message: 'Something went wrong with the like',
+          buttons: ['OK'],
+        })
+        .then((alert) => alert.present());
+    }
+  }
+
+  async EditTweet(id: any) {
+    console.log(id);
+    console.log('funciona');
     const actionSheet = await this.actionSheetCtrl.create({
       buttons: [
         {
           text: 'Delete',
           role: 'destructive',
-          data: {
-            action: 'delete',
+          handler: () => {
+            this.alert
+              .create({
+                header: 'Delete tweet',
+                message: 'Are you sure you want to delete this tweet?',
+                buttons: [
+                  {
+                    text: 'Yes',
+                    handler: () => {
+                      this.deleteTweet(id);
+                    },
+                  },
+                  {
+                    text: 'No',
+                    handler: () => {},
+                  },
+                ],
+              })
+              .then((alert) => alert.present());
           },
         },
         {
           text: 'Edit',
           role: 'modification',
-          data: {
-            action: 'Edit',
+          handler: () => {
+            console.log('Edit clicked');
+            Preferences.set({ key: 'tweetId', value: id });
+            this.navigation.navigateForward('/main/tabs/edit');
           },
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {},
         },
       ],
     });
-
     await actionSheet.present();
   }
-
-
-
-
-  AllTweets: TweetInterface[] = [];
-
-  // items = [
-  //   {
-  //     img: 'https://estaticos-cdn.sport.es/clip/0c9177bb-182c-4db2-9663-d5e01821f9a9_alta-libre-aspect-ratio_default_0.jpg',
-  //     user: 'AndresAl',
-  //     username: 'radsylph',
-  //     date: '12345678',
-  //     twitt:
-  //       'diegoarf + Juan Romero. pasen videito cuando tengan relaciones, necesito porno de calidad',
-  //     images:
-  //       'https://dx35vtwkllhj9.cloudfront.net/universalstudios/bros/images/regions/ca/updates/onesheet.jpg',
-  //   },
-  //   {
-  //     img: 'https://pbs.twimg.com/media/F-MPEnqWoAAP-ce?format=jpg&name=small',
-  //     user: 'Bruh.mp4',
-  //     username: 'nohayluz52',
-  //     date: '12345678',
-  //     twitt: '- Le mostraste tu última imagen a pomni.\n - ¿¿Que es.??',
-  //     images:
-  //       'https://pbs.twimg.com/media/F-LiipQWUAAFcVx?format=jpg&name=small',
-  //   },
-
-  //   {
-  //     img: 'https://www.rollingstone.com/wp-content/uploads/2020/01/SturgillSimpson.jpg',
-  //     user: 'NyxDuodecim',
-  //     username: 'Nautico00',
-  //     date: '12345678',
-  //     twitt: 'BombRushCyberfunk',
-  //     images:
-  //       'https://pbs.twimg.com/media/F5S34BjWsAECmiz?format=jpg&name=large',
-  //   },
-  // ];
-
-
-
-  // async checkToken() {
-  //   const { value } = await Preferences.get({ key: 'token' });
-  //   console.log(`this is the token ${value}`);
-  // }
-
-
 
   async deleteToken() {
     await Preferences.remove({ key: 'token' });
   }
-  async ngOnInit() {
-    this.http
-      .get('https://funaticsbackend-production.up.railway.app/funa/get')
-      .pipe(
-        catchError((error) => {
-          console.log(error.status);
-          if (error.status == 500) {
-            console.log('hola');
-            this.deleteToken();
-            this.alert
-              .create({
-                header: 'Session terminated',
-                message: 'Please login again',
-                buttons: ['OK'],
-              })
-              .then((alert) => alert.present());
-            this.navigation.navigateForward('/login');
-          } else if (error.status == 401) {
-            this.alert
-              .create({
-                header: 'Unauthorized',
-                message: 'Please login to see this page',
-                buttons: ['OK'],
-              })
-              .then((alert) => alert.present());
-            this.navigation.navigateForward('/login');
-          }
-          return throwError(error);
-        })
-      )
-      .subscribe((res: any) => {
-        console.log(res);
-        this.AllTweets = res.tweets;
-      });
+
+  async deleteTweet(id: any) {
+    try {
+      this.http
+        .delete(
+          `https://funaticsbackend-production.up.railway.app/funa/delete/${id}`
+        )
+        .subscribe((res: any) => {
+          console.log(res);
+          this.alert
+            .create({
+              header: 'Tweet deleted',
+              message: 'Your tweet has been deleted',
+              buttons: ['OK'],
+            })
+            .then((alert) => alert.present());
+          this.ngOnInit();
+        });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  async test(_id: string) {
+  async ngOnInit() {
+    await this.LoadTweets();
+    Preferences.set({ key: 'Ownertoken', value: this.ownerToken });
+    await this.setToken();
+    try {
+      this.http
+        .get(`https://funaticsbackend-production.up.railway.app/auth/getUser`)
+        .subscribe((res: any) => {
+          console.log(res);
+          this.User = res.user;
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  viewPost(_id: string) {
     console.log(_id);
-    await Preferences.set({ key: 'tweetId', value: _id });
     console.log('hola');
+    Preferences.set({ key: 'tweetId', value: _id });
+    this.navigation.navigateForward('/main/tabs/post');
+    this.ngOnInit();
+  }
+
+  async viewUser(_id: string) {
+    // console.log('hla user');
+    // console.log(_id);
+    await Preferences.set({ key: 'userId', value: _id });
+    this.navigation.navigateForward('/main/tabs/user');
+  }
+
+  async setToken() {
+    await Preferences.set({ key: 'Ownertoken', value: this.ownerToken });
+    console.log('owner: ' + this.ownerToken);
+  }
+
+  changeSection(ev: any) {
+    console.log('se ha cambiado a ' + ev.detail.value);
+    if (ev.detail.value === 'For_You') {
+      this.LoadTweets();
+    } else if (ev.detail.value === 'Following') {
+      this.loadFollowersTweets();
+    }
+  }
+
+  async LoadTweets() {
+    try {
+      this.http
+        .get('https://funaticsbackend-production.up.railway.app/funa/get')
+        .subscribe((res: any) => {
+          console.log(res);
+          this.ownerToken = res.OwnerInitial;
+          this.AllTweets = res.tweets;
+          this.AllTweets.map((tweet: any) => {
+            tweet.LikeToggleIcon = 'flame-outline';
+            return tweet;
+          });
+        });
+    } catch (error: any) {
+      console.log(error.status);
+      if (error.status == 500) {
+        this.deleteToken();
+        this.alert
+          .create({
+            header: 'Session terminated',
+            message: 'Please login again',
+            buttons: ['OK'],
+          })
+          .then((alert) => alert.present());
+        this.navigation.navigateForward('/login');
+      } else if (error.status == 401) {
+        this.alert
+          .create({
+            header: 'Unauthorized',
+            message: 'Please login to see this page',
+            buttons: ['OK'],
+          })
+          .then((alert) => alert.present());
+        this.navigation.navigateForward('/login');
+      }
+    }
+  }
+
+  async loadFollowersTweets() {
+    try {
+      this.http
+        .get(
+          'https://funaticsbackend-production.up.railway.app/funa/followersTweets'
+        )
+        .subscribe((res: any) => {
+          console.log(res);
+          this.ownerToken = res.OwnerInitial;
+          this.AllTweets = res.tweetsWithIsLiked;
+          this.AllTweets.map((tweet: any) => {
+            tweet.LikeToggleIcon = 'flame-outline';
+            return tweet;
+          });
+        });
+    } catch (error: any) {
+      console.log(error.status);
+      if (error.status == 500) {
+        this.deleteToken();
+        this.alert
+          .create({
+            header: 'Session terminated',
+            message: 'Please login again',
+            buttons: ['OK'],
+          })
+          .then((alert) => alert.present());
+        this.navigation.navigateForward('/login');
+      } else if (error.status == 401) {
+        this.alert
+          .create({
+            header: 'Unauthorized',
+            message: 'Please login to see this page',
+            buttons: ['OK'],
+          })
+          .then((alert) => alert.present());
+        this.navigation.navigateForward('/login');
+      }
+    }
+  }
+
+  async makeComment(id: any) {
+    await Preferences.set({ key: 'tweetId', value: id });
+    this.navigation.navigateForward('/main/tabs/create-comment');
   }
 }

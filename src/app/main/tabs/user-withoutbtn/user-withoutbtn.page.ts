@@ -6,11 +6,12 @@ import { userProfile, newUser } from 'src/app/interface/user.interface';
 import { NavController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.page.html',
-  styleUrls: ['./user.page.scss'],
+  selector: 'app-user-withoutbtn',
+  templateUrl: './user-withoutbtn.page.html',
+  styleUrls: ['./user-withoutbtn.page.scss'],
 })
-export class UserPage implements OnInit {
+export class UserWithoutbtnPage implements OnInit {
+
   constructor(
     private actionSheetCtrl: ActionSheetController,
     private http: HttpClient,

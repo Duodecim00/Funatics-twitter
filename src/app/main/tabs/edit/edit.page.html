@@ -7,9 +7,9 @@
         color="funaprimary"
       ></ion-back-button>
     </ion-buttons>
-    <ion-title>Create a post</ion-title>
+    <ion-title>Edit your post</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="CreatePost()">Create</ion-button>
+      <ion-button (click)="editPost()">Edit</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -37,12 +37,40 @@
       <ion-col>
         <ion-item lines="none">
           <ion-textarea
-            placeholder="Header"
+            placeholder="Content"
             [autoGrow]="true"
             [(ngModel)]="newTweet.content"
           ></ion-textarea>
         </ion-item>
       </ion-col>
     </ion-row>
+    <ion-col>
+      <ion-item lines="none">
+        <ion-button
+          (click)="takePicture()"
+          color="funaprimary"
+          class="photobtn"
+          expand="block"
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+          "
+        >
+          <ion-icon name="camera" style="width: 100%; height: 100%"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item lines="none">
+        <ion-img
+          class="profile-picture"
+          [src]="newTweet.image"
+          *ngIf="newTweet.image"
+        ></ion-img>
+      </ion-item>
+    </ion-col>
   </ion-grid>
 </ion-content>

@@ -17,9 +17,13 @@ export interface TweetInterface {
   PostToComment: string;
   createdAt: string;
   updatedAt: string;
+  LikeToggleIcon?: any;
+  isLiked?: boolean;
 }
 
 export interface CreateTweetInterface {
   title: string;
   content: string;
+  image?: string;
 }
+

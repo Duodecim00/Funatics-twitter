@@ -4,13 +4,14 @@ import { Preferences } from '@capacitor/preferences';
 import { HttpClient } from '@angular/common/http';
 import { userProfile, newUser } from 'src/app/interface/user.interface';
 import { NavController } from '@ionic/angular';
-
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.page.html',
-  styleUrls: ['./user.page.scss'],
+  selector: 'app-user-withoutconfg',
+  templateUrl: './user-withoutconfg.page.html',
+  styleUrls: ['./user-withoutconfg.page.scss'],
 })
-export class UserPage implements OnInit {
+export class UserWithoutconfgPage implements OnInit {
+
+
   constructor(
     private actionSheetCtrl: ActionSheetController,
     private http: HttpClient,

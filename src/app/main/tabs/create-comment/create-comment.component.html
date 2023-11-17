@@ -7,9 +7,9 @@
         color="funaprimary"
       ></ion-back-button>
     </ion-buttons>
-    <ion-title>Create a post</ion-title>
+    <ion-title>Comment a post</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="CreatePost()">Create</ion-button>
+      <ion-button (click)="createComment()">Comment</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -28,7 +28,7 @@
         <ion-item lines="none">
           <ion-input
             placeholder="Title"
-            [(ngModel)]="newTweet.title"
+            [(ngModel)]="newComment.title"
           ></ion-input>
         </ion-item>
       </ion-col>
@@ -39,7 +39,7 @@
           <ion-textarea
             placeholder="Content"
             [autoGrow]="true"
-            [(ngModel)]="newTweet.content"
+            [(ngModel)]="newComment.content"
           ></ion-textarea>
         </ion-item>
       </ion-col>
@@ -47,7 +47,6 @@
     <ion-col>
       <ion-item lines="none">
         <ion-button
-          (click)="takePicture()"
           color="funaprimary"
           class="photobtn"
           expand="block"
@@ -58,6 +57,7 @@
             height: 100%;
             width: 100%;
           "
+          (click)="takePicture()"
         >
           <ion-icon name="camera" style="width: 100%; height: 100%"></ion-icon>
         </ion-button>
@@ -67,8 +67,8 @@
       <ion-item lines="none">
         <ion-img
           class="profile-picture"
-          [src]="newTweet.image"
-          *ngIf="newTweet.image"
+          [src]="newComment.image"
+          *ngIf="newComment.image"
         ></ion-img>
       </ion-item>
     </ion-col>
